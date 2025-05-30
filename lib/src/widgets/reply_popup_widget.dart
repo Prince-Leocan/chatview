@@ -35,6 +35,7 @@ class ReplyPopupWidget extends StatelessWidget {
     required this.onMoreTap,
     this.buttonTextStyle,
     this.topBorderColor,
+    required this.onEditTap,
   }) : super(key: key);
 
   /// Represents message is sent by current user or not.
@@ -42,6 +43,8 @@ class ReplyPopupWidget extends StatelessWidget {
 
   /// Provides call back when user tap on unsend button.
   final VoidCallBack onUnsendTap;
+
+  final VoidCallBack onEditTap;
 
   /// Provides call back when user tap on reply button.
   final VoidCallBack onReplyTap;
@@ -82,12 +85,22 @@ class ReplyPopupWidget extends StatelessWidget {
               ),
             ),
           ),
+          Expanded(
+            child: InkWell(
+              onTap: onUnsendTap,
+              child: Text(
+                PackageStrings.unsend,
+                textAlign: TextAlign.center,
+                style: textStyle,
+              ),
+            ),
+          ),
           if (sentByCurrentUser)
             Expanded(
               child: InkWell(
-                onTap: onUnsendTap,
+                onTap: onEditTap,
                 child: Text(
-                  PackageStrings.unsend,
+                  PackageStrings.edit,
                   textAlign: TextAlign.center,
                   style: textStyle,
                 ),

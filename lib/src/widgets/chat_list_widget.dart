@@ -40,10 +40,13 @@ class ChatListWidget extends StatefulWidget {
     this.loadMoreData,
     this.isLastPage,
     this.onChatListTap,
+    this.onEditTap,
   }) : super(key: key);
 
   /// Provides controller for accessing few function for running chat.
   final ChatController chatController;
+
+  final MessageCallBack? onEditTap;
 
   /// Provides widget for loading view while pagination is enabled.
   final Widget? loadingWidget;
@@ -237,6 +240,14 @@ class _ChatListWidgetState extends State<ChatListWidget> {
                     if (replyPopup?.onReplyTap != null) {
                       replyPopup?.onReplyTap!(message);
                     }
+                  },
+                  onEditTap: () {
+                    _onChatListTap();
+                    if (featureActiveConfig?.enableReactionPopup ?? false) {
+                      chatViewIW?.showPopUp.value = false;
+                    }
+                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                    widget.onEditTap?.call(message);
                   },
                   sentByCurrentUser: sentByCurrentUser,
                 ),
