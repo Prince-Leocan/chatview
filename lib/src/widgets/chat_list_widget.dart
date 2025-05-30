@@ -213,9 +213,20 @@ class _ChatListWidgetState extends State<ChatListWidget> {
                   },
                   onUnsendTap: () {
                     _onChatListTap();
-                    replyPopup?.onUnsendTap?.call(
-                      message,
-                    );
+
+                    if (replyPopup?.onUnsendTap != null) {
+                      replyPopup?.onUnsendTap!(message);
+                    } else {
+                      // Default: Remove message from initialMessageList
+                      chatController.initialMessageList
+                          .removeWhere((m) => m.id == message.id);
+
+                      // Push updated list to the stream to update UI
+                      if (!chatController.messageStreamController.isClosed) {
+                        chatController.messageStreamController.sink
+                            .add(chatController.initialMessageList);
+                      }
+                    }
                   },
                   onReplyTap: () {
                     widget.assignReplyMessage(message);
