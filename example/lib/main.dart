@@ -88,6 +88,11 @@ class _ChatScreenState extends State<ChatScreen> {
     ]);
   }
 
+  void removeMessage(String messageId) {
+    Data.messageList.removeWhere(
+        (msg) => msg.id == messageId); // If using ChangeNotifier to update UI
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -237,6 +242,9 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
         ),
         replyPopupConfig: ReplyPopupConfiguration(
+          onUnsendTap: (message) {
+            removeMessage(message.id);
+          },
           backgroundColor: theme.replyPopupColor,
           buttonTextStyle: TextStyle(color: theme.replyPopupButtonColor),
           topBorderColor: theme.replyPopupTopBorderColor,
